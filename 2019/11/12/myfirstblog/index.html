@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>myfirstblog | Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="一、IntroductionThis article provides instructions to setup a basic deployment using Jenkins to Amazon S3 by pulling the source code from GitLab and pushing it to a S3 bucket. Deployment automation usin">
+<meta property="og:type" content="article">
+<meta property="og:title" content="myfirstblog">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;12&#x2F;myfirstblog&#x2F;index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、IntroductionThis article provides instructions to setup a basic deployment using Jenkins to Amazon S3 by pulling the source code from GitLab and pushing it to a S3 bucket. Deployment automation usin">
+<meta property="og:locale" content="en">
+<meta property="og:image" content="https:&#x2F;&#x2F;s1.51cto.com&#x2F;images&#x2F;blog&#x2F;201911&#x2F;08&#x2F;536bf469c499fabce536a2002cdad0a9.png?x-oss-process=image&#x2F;watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=">
+<meta property="og:image" content="https:&#x2F;&#x2F;s1.51cto.com&#x2F;images&#x2F;blog&#x2F;201911&#x2F;08&#x2F;87296d190deb801f216f07200f6faa70.png?x-oss-process=image&#x2F;watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=">
+<meta property="og:image" content="https:&#x2F;&#x2F;s1.51cto.com&#x2F;images&#x2F;blog&#x2F;201911&#x2F;08&#x2F;e8d47c1ad2eece1d45fb53666d26fba9.png?x-oss-process=image&#x2F;watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=">
+<meta property="og:image" content="https:&#x2F;&#x2F;s1.51cto.com&#x2F;images&#x2F;blog&#x2F;201911&#x2F;08&#x2F;e233f40fb13dba86ff367a800530a654.png?x-oss-process=image&#x2F;watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=">
+<meta property="og:image" content="https:&#x2F;&#x2F;s1.51cto.com&#x2F;images&#x2F;blog&#x2F;201911&#x2F;08&#x2F;46709b999a850411b26f41886512515b.png?x-oss-process=image&#x2F;watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=">
+<meta property="og:image" content="https:&#x2F;&#x2F;s1.51cto.com&#x2F;images&#x2F;blog&#x2F;201911&#x2F;08&#x2F;025707bc76a45a923a0f0926dd3996aa.png?x-oss-process=image&#x2F;watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=">
+<meta property="og:image" content="https:&#x2F;&#x2F;s1.51cto.com&#x2F;images&#x2F;blog&#x2F;201911&#x2F;08&#x2F;121e688459eb0d6f936e3ec0c6eaf54d.png?x-oss-process=image&#x2F;watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=">
+<meta property="og:image" content="https:&#x2F;&#x2F;s1.51cto.com&#x2F;images&#x2F;blog&#x2F;201911&#x2F;08&#x2F;d9b89a170d8cff0fcfb4f286f8733a94.png?x-oss-process=image&#x2F;watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=">
+<meta property="og:updated_time" content="2019-11-12T10:54:35.146Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;s1.51cto.com&#x2F;images&#x2F;blog&#x2F;201911&#x2F;08&#x2F;536bf469c499fabce536a2002cdad0a9.png?x-oss-process=image&#x2F;watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-myfirstblog" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2019/11/12/myfirstblog/" class="article-date">
+  <time datetime="2019-11-12T10:53:22.000Z" itemprop="datePublished">2019-11-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      myfirstblog
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="一、Introduction"><a href="#一、Introduction" class="headerlink" title="一、Introduction"></a>一、Introduction</h1><p>This article provides instructions to setup a basic deployment using Jenkins to Amazon S3 by pulling the source code from GitLab and pushing it to a S3 bucket. Deployment automation using Jenkins saves us from manually upload files to the S3 bucket using AWS online console. In addition to saving time, this method pushes the exact code that was committed in the latest Git push, therefore avoiding upload of wrong files. This is useful for static web site stored on S3 having a large number of files. </p>
+<h1 id="二、Pre-requisite"><a href="#二、Pre-requisite" class="headerlink" title="二、Pre-requisite"></a>二、Pre-requisite</h1><p>OS: Mac OS but the main ideas are OS agnostic. </p>
+<p>It is assumed that you already have a static webpage on AWS S3. If not, you can check out instructions from AWS documentation: <a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/HostingWebsiteOnS3Setup.html" target="_blank" rel="noopener">http://docs.aws.amazon.com/AmazonS3/latest/dev/HostingWebsiteOnS3Setup.html</a></p>
+<p>You should also have your project added in GitLab. If not, you can have a look at their documentation: <a href="https://docs.gitlab.com/ee/gitlab-basics/create-project.html" target="_blank" rel="noopener">https://docs.gitlab.com/ee/gitlab-basics/create-project.html</a></p>
+<h2 id="Install-Jenkins"><a href="#Install-Jenkins" class="headerlink" title="Install Jenkins"></a>Install Jenkins</h2><ul>
+<li><ol>
+<li>Download Jenkins and install (Current LTS version as of this writing is 2.89.2): <a href="https://jenkins.io/download" target="_blank" rel="noopener">https://jenkins.io/download</a></li>
+</ol>
+</li>
+<li><ol start="2">
+<li>After the installation, change the Update Site url from https to http: Jenkins-&gt;Plugin Manager-&gt;Advanced (tab)-&gt;Update Site: <a href="http://updates.jenkins.io/update-center.json" target="_blank" rel="noopener">http://updates.jenkins.io/update-center.json</a></li>
+</ol>
+</li>
+<li><ol start="3">
+<li>Install Git Plugin (3.7.0) Jenkins-&gt;Plugin Manager-&gt;Available (tab) Optional. Install Green Balls plugin to make the blue success ball green. </li>
+</ol>
+</li>
+</ul>
+<h2 id="Setup-to-pull-project-from-GitLab"><a href="#Setup-to-pull-project-from-GitLab" class="headerlink" title="Setup to pull project from GitLab"></a>Setup to pull project from GitLab</h2><p><strong>Establish SSH authentication between your local machine and GitLab.</strong></p>
+<ul>
+<li><ol>
+<li>Get the Private Key Inside the File /.ssh/id_rsa and Create a Git Credential.<br>This site shows you how to create a Pair of Ssh Key if you do not have one: <a href="https://docs.gitlab.com/ce/ssh/README.html" target="_blank" rel="noopener">https://docs.gitlab.com/ce/ssh/README.html</a></li>
+</ol>
+</li>
+<li><ol start="2">
+<li>Create a Git credential in Jenkins.</li>
+</ol>
+</li>
+</ul>
+<p>Jenkins-&gt;Credentials-&gt;System-&gt;Global credentials (unrestricted) -&gt; Add Credentials</p>
+<p>Kind: SSH Username with private key.<br>Select Private Key and paste the private key.<br>Press OK</p>
+<p><img src="https://s1.51cto.com/images/blog/201911/08/536bf469c499fabce536a2002cdad0a9.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt=""></p>
+<ul>
+<li><ol start="3">
+<li>Add Git username and email to Jenkins Git properties.</li>
+</ol>
+</li>
+</ul>
+<p>Manage Jenkins-&gt;Configure System<br>Add your Git username and email under Git plugin section</p>
+<p><img src="https://s1.51cto.com/images/blog/201911/08/87296d190deb801f216f07200f6faa70.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt=""></p>
+<ul>
+<li><ol start="4">
+<li>Create a project/job in Jenkins</li>
+</ol>
+</li>
+</ul>
+<p>Jenkins-&gt;New Item</p>
+<p>Enter any name for this Job<br>Select Freestyle Project<br>Press Ok</p>
+<p><img src="https://s1.51cto.com/images/blog/201911/08/e8d47c1ad2eece1d45fb53666d26fba9.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt=""></p>
+<ul>
+<li><ol start="5">
+<li>Configure Source Code Management to pull the project from Git.</li>
+</ol>
+</li>
+</ul>
+<p>Fill in Git project URL and select credential to use (created in step 2) under Source Code Management tab.<br>Press Save.</p>
+<p><img src="https://s1.51cto.com/images/blog/201911/08/e233f40fb13dba86ff367a800530a654.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt=""></p>
+<ul>
+<li><ol start="6">
+<li>At this point you can test to see if the Jenkins job can retrieve your project from Git by clicking Build Now.</li>
+</ol>
+</li>
+</ul>
+<p><img src="https://s1.51cto.com/images/blog/201911/08/46709b999a850411b26f41886512515b.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt=""></p>
+<p>If successful, you should see a blue or green ball. You can check the logs by clicking on the blue/green ball.</p>
+<p><img src="https://s1.51cto.com/images/blog/201911/08/025707bc76a45a923a0f0926dd3996aa.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt=""></p>
+<p>To check if the project is correctly pulled from git to Jenkins workspace, click on Workspace. You should see the same files that are in your Git repository.</p>
+<p><img src="https://s1.51cto.com/images/blog/201911/08/121e688459eb0d6f936e3ec0c6eaf54d.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt=""></p>
+<h2 id="Pushing-project-to-Amazon-S3"><a href="#Pushing-project-to-Amazon-S3" class="headerlink" title="Pushing project to Amazon S3"></a>Pushing project to Amazon S3</h2><ul>
+<li><ol start="7">
+<li>Create a user to allow access to your S3 bucket.<br>In the online AWS console-&gt;IAM (service)-&gt;Users<br>Click Add user<br>Enter any username you want<br>Check Programmatic access<br>Click Next Permission<br>Select tab Attach Policy Directly<br>Search for ‘s3’<br>Select AmazonS3FullAccess<br>Click Next Review<br>Click Create user<br>Write down the user Access Key ID and Secret Access Key as they will not be available anymore after this point.<br>Click Close</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>If you server is EC2, you can use IAM Role to attach to your EC2.</p>
+</blockquote>
+<ul>
+<li><ol start="8">
+<li>Install and configure aws command (command line client to access S3)</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install awscli</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p><a href="https://docs.aws.amazon.com/zh_cn/cli/latest/userguide/cli-chap-install.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/zh_cn/cli/latest/userguide/cli-chap-install.html</a></p>
+</blockquote>
+<ul>
+<li><ol start="9">
+<li>Update the Jenkins job to use awscli to push code to S3</li>
+</ol>
+</li>
+</ul>
+<p>Return to the job created in Jenkins and click configure<br>Go to the Build section<br>Enter:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aws s3 sync . s3://beauty.wzlinux.com/ --region eu-west-3 --delete --exclude &quot;.git/*&quot;;</span><br></pre></td></tr></table></figure>
+
+<p>explanation: the first line tells Jenkins where to find s3cmd command by adding its location to PATH<br>the second line uses s3cmd to copy all (.) to a S3 bucket name optimus.com<br>–delete-removed will remove deleted files from S3<br>–exclude ‘.git/‘ excludes the git directory to sync to S3.<br>Click Save<br>Click Build Now</p>
+<p><img src="https://s1.51cto.com/images/blog/201911/08/d9b89a170d8cff0fcfb4f286f8733a94.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt=""></p>
+<p>By checking the job’s log, you should see that Jenkins pulled the code from Git and pushed it to AWS S3.<br>That’s it! I hope this has helped you. </p>
+<p>License<br>This article, along with any associated source code and files, is licensed under The Code Project Open License (CPOL)</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2019/11/12/myfirstblog/" data-id="ck2vqtpln00001qmtef52cdj3" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">November 2019</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2019/11/12/myfirstblog/">myfirstblog</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2019 John Doe<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+
+
+  </div>
+</body>
+</html>
