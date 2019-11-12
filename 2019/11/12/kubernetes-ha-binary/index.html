@@ -5,13 +5,16 @@
   
 
   
-  <title>Hexo</title>
+  <title>kubernetes-ha-binary | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hexo">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;index.html">
+  <meta name="description" content="一、项目介绍项目致力于让有意向使用原生kubernetes集群的企业或个人，可以方便的、系统的使用二进制的方式手工搭建kubernetes高可用集群。并且让相关的人员可以更好的理解kubernetes集群的运作机制。 软件版本 os centos7.7（ubuntu也适用，需要替换部分命令） kubernetes 1.16.2 etcd 3.4.3 docker 18.06 calico 3.10">
+<meta property="og:type" content="article">
+<meta property="og:title" content="kubernetes-ha-binary">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;11&#x2F;12&#x2F;kubernetes-ha-binary&#x2F;index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、项目介绍项目致力于让有意向使用原生kubernetes集群的企业或个人，可以方便的、系统的使用二进制的方式手工搭建kubernetes高可用集群。并且让相关的人员可以更好的理解kubernetes集群的运作机制。 软件版本 os centos7.7（ubuntu也适用，需要替换部分命令） kubernetes 1.16.2 etcd 3.4.3 docker 18.06 calico 3.10">
 <meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2019-11-12T11:07:01.303Z">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
@@ -59,9 +62,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-kubernetes-ha-binary" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-kubernetes-ha-binary" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2019/11/12/kubernetes-ha-binary/" class="article-date">
   <time datetime="2019-11-12T11:06:22.000Z" itemprop="datePublished">2019-11-12</time>
@@ -74,8 +75,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/11/12/kubernetes-ha-binary/">kubernetes-ha-binary</a>
+    <h1 class="article-title" itemprop="name">
+      kubernetes-ha-binary
     </h1>
   
 
@@ -276,148 +277,19 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-myfirstblog" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/11/12/myfirstblog/" class="article-date">
-  <time datetime="2019-11-12T10:53:22.000Z" itemprop="datePublished">2019-11-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/11/12/myfirstblog/">Gitlab +Jenkins +S3 部署静态页面</a>
-    </h1>
+    <a href="/2019/11/12/myfirstblog/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Gitlab +Jenkins +S3 部署静态页面</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="一、Introduction"><a href="#一、Introduction" class="headerlink" title="一、Introduction"></a>一、Introduction</h1><p>This article provides instructions to setup a basic deployment using Jenkins to Amazon S3 by pulling the source code from GitLab and pushing it to a S3 bucket. Deployment automation using Jenkins saves us from manually upload files to the S3 bucket using AWS online console. In addition to saving time, this method pushes the exact code that was committed in the latest Git push, therefore avoiding upload of wrong files. This is useful for static web site stored on S3 having a large number of files. </p>
-<h1 id="二、Pre-requisite"><a href="#二、Pre-requisite" class="headerlink" title="二、Pre-requisite"></a>二、Pre-requisite</h1><p>OS: Mac OS but the main ideas are OS agnostic. </p>
-<p>It is assumed that you already have a static webpage on AWS S3. If not, you can check out instructions from AWS documentation: <a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/HostingWebsiteOnS3Setup.html" target="_blank" rel="noopener">http://docs.aws.amazon.com/AmazonS3/latest/dev/HostingWebsiteOnS3Setup.html</a></p>
-<p>You should also have your project added in GitLab. If not, you can have a look at their documentation: <a href="https://docs.gitlab.com/ee/gitlab-basics/create-project.html" target="_blank" rel="noopener">https://docs.gitlab.com/ee/gitlab-basics/create-project.html</a></p>
-<h2 id="Install-Jenkins"><a href="#Install-Jenkins" class="headerlink" title="Install Jenkins"></a>Install Jenkins</h2><ul>
-<li><ol>
-<li>Download Jenkins and install (Current LTS version as of this writing is 2.89.2): <a href="https://jenkins.io/download" target="_blank" rel="noopener">https://jenkins.io/download</a></li>
-</ol>
-</li>
-<li><ol start="2">
-<li>After the installation, change the Update Site url from https to http: Jenkins-&gt;Plugin Manager-&gt;Advanced (tab)-&gt;Update Site: <a href="http://updates.jenkins.io/update-center.json" target="_blank" rel="noopener">http://updates.jenkins.io/update-center.json</a></li>
-</ol>
-</li>
-<li><ol start="3">
-<li>Install Git Plugin (3.7.0) Jenkins-&gt;Plugin Manager-&gt;Available (tab) Optional. Install Green Balls plugin to make the blue success ball green. </li>
-</ol>
-</li>
-</ul>
-<h2 id="Setup-to-pull-project-from-GitLab"><a href="#Setup-to-pull-project-from-GitLab" class="headerlink" title="Setup to pull project from GitLab"></a>Setup to pull project from GitLab</h2><p><strong>Establish SSH authentication between your local machine and GitLab.</strong></p>
-<ul>
-<li><ol>
-<li>Get the Private Key Inside the File /.ssh/id_rsa and Create a Git Credential.<br>This site shows you how to create a Pair of Ssh Key if you do not have one: <a href="https://docs.gitlab.com/ce/ssh/README.html" target="_blank" rel="noopener">https://docs.gitlab.com/ce/ssh/README.html</a></li>
-</ol>
-</li>
-<li><ol start="2">
-<li>Create a Git credential in Jenkins.</li>
-</ol>
-</li>
-</ul>
-<p>Jenkins-&gt;Credentials-&gt;System-&gt;Global credentials (unrestricted) -&gt; Add Credentials</p>
-<p>Kind: SSH Username with private key.<br>Select Private Key and paste the private key.<br>Press OK</p>
-<p><img src="https://s1.51cto.com/images/blog/201911/08/536bf469c499fabce536a2002cdad0a9.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt=""></p>
-<ul>
-<li><ol start="3">
-<li>Add Git username and email to Jenkins Git properties.</li>
-</ol>
-</li>
-</ul>
-<p>Manage Jenkins-&gt;Configure System<br>Add your Git username and email under Git plugin section</p>
-<p><img src="https://s1.51cto.com/images/blog/201911/08/87296d190deb801f216f07200f6faa70.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt=""></p>
-<ul>
-<li><ol start="4">
-<li>Create a project/job in Jenkins</li>
-</ol>
-</li>
-</ul>
-<p>Jenkins-&gt;New Item</p>
-<p>Enter any name for this Job<br>Select Freestyle Project<br>Press Ok</p>
-<p><img src="https://s1.51cto.com/images/blog/201911/08/e8d47c1ad2eece1d45fb53666d26fba9.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt=""></p>
-<ul>
-<li><ol start="5">
-<li>Configure Source Code Management to pull the project from Git.</li>
-</ol>
-</li>
-</ul>
-<p>Fill in Git project URL and select credential to use (created in step 2) under Source Code Management tab.<br>Press Save.</p>
-<p><img src="https://s1.51cto.com/images/blog/201911/08/e233f40fb13dba86ff367a800530a654.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt=""></p>
-<ul>
-<li><ol start="6">
-<li>At this point you can test to see if the Jenkins job can retrieve your project from Git by clicking Build Now.</li>
-</ol>
-</li>
-</ul>
-<p><img src="https://s1.51cto.com/images/blog/201911/08/46709b999a850411b26f41886512515b.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt=""></p>
-<p>If successful, you should see a blue or green ball. You can check the logs by clicking on the blue/green ball.</p>
-<p><img src="https://s1.51cto.com/images/blog/201911/08/025707bc76a45a923a0f0926dd3996aa.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt=""></p>
-<p>To check if the project is correctly pulled from git to Jenkins workspace, click on Workspace. You should see the same files that are in your Git repository.</p>
-<p><img src="https://s1.51cto.com/images/blog/201911/08/121e688459eb0d6f936e3ec0c6eaf54d.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt=""></p>
-<h2 id="Pushing-project-to-Amazon-S3"><a href="#Pushing-project-to-Amazon-S3" class="headerlink" title="Pushing project to Amazon S3"></a>Pushing project to Amazon S3</h2><ul>
-<li><ol start="7">
-<li>Create a user to allow access to your S3 bucket.<br>In the online AWS console-&gt;IAM (service)-&gt;Users<br>Click Add user<br>Enter any username you want<br>Check Programmatic access<br>Click Next Permission<br>Select tab Attach Policy Directly<br>Search for ‘s3’<br>Select AmazonS3FullAccess<br>Click Next Review<br>Click Create user<br>Write down the user Access Key ID and Secret Access Key as they will not be available anymore after this point.<br>Click Close</li>
-</ol>
-</li>
-</ul>
-<blockquote>
-<p>If you server is EC2, you can use IAM Role to attach to your EC2.</p>
-</blockquote>
-<ul>
-<li><ol start="8">
-<li>Install and configure aws command (command line client to access S3)</li>
-</ol>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install awscli</span><br></pre></td></tr></table></figure>
-
-<blockquote>
-<p><a href="https://docs.aws.amazon.com/zh_cn/cli/latest/userguide/cli-chap-install.html" target="_blank" rel="noopener">https://docs.aws.amazon.com/zh_cn/cli/latest/userguide/cli-chap-install.html</a></p>
-</blockquote>
-<ul>
-<li><ol start="9">
-<li>Update the Jenkins job to use awscli to push code to S3</li>
-</ol>
-</li>
-</ul>
-<p>Return to the job created in Jenkins and click configure<br>Go to the Build section<br>Enter:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">aws s3 sync . s3://beauty.wzlinux.com/ --region eu-west-3 --delete --exclude &quot;.git/*&quot;;</span><br></pre></td></tr></table></figure>
-
-<p>explanation: the first line tells Jenkins where to find s3cmd command by adding its location to PATH<br>the second line uses s3cmd to copy all (.) to a S3 bucket name optimus.com<br>–delete-removed will remove deleted files from S3<br>–exclude ‘.git/‘ excludes the git directory to sync to S3.<br>Click Save<br>Click Build Now</p>
-<p><img src="https://s1.51cto.com/images/blog/201911/08/d9b89a170d8cff0fcfb4f286f8733a94.png?x-oss-process=image/watermark,size_16,text_QDUxQ1RP5Y2a5a6i,color_FFFFFF,t_100,g_se,x_10,y_10,shadow_90,type_ZmFuZ3poZW5naGVpdGk=" alt=""></p>
-<p>By checking the job’s log, you should see that Jenkins pulled the code from Git and pushed it to AWS S3.<br>That’s it! I hope this has helped you. </p>
-<p>License<br>This article, along with any associated source code and files, is licensed under The Code Project Open License (CPOL)</p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2019/11/12/myfirstblog/" data-id="ck2vr414k00013cmt4k3qazth" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-  
-
 
 </section>
         
